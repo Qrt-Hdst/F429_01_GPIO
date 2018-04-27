@@ -93,13 +93,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  	  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_SET);
-  	  HAL_Delay(1000);
-  	  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_RESET);
-  	  HAL_Delay(1000);
-  	  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_SET);
-  	  HAL_Delay(1000);
-  	  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_RESET);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,7 +102,8 @@ int main(void)
   {
 
   /* USER CODE END WHILE */
-
+  	  HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_13);
+	  HAL_Delay(1000);
   /* USER CODE BEGIN 3 */
 
   }
