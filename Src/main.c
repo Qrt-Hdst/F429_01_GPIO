@@ -100,10 +100,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		 //HAL_GPIO_ReadPin(Button_Pin);
+	  HAL_GPIO_ReadPin(Button_GPIO_Port,Button_Pin);
+	  if(HAL_GPIO_ReadPin(Button_GPIO_Port,Button_Pin)==GPIO_PIN_SET){
+		  HAL_GPIO_WritePin(Green_LED_GPIO_Port,Green_LED_Pin,GPIO_PIN_SET);
+	  }else{
+		  HAL_GPIO_WritePin(Green_LED_GPIO_Port,Green_LED_Pin,GPIO_PIN_RESET);
+	  }
 
   /* USER CODE END WHILE */
-  	  HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_13);
-	  HAL_Delay(1000);
+
   /* USER CODE BEGIN 3 */
 
   }
@@ -177,17 +183,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Green_LED_GPIO_Port, Green_LED_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PG13 */
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  /*Configure GPIO pin : Button_Pin */
+  GPIO_InitStruct.Pin = Button_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Button_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Green_LED_Pin */
+  GPIO_InitStruct.Pin = Green_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+  HAL_GPIO_Init(Green_LED_GPIO_Port, &GPIO_InitStruct);
 
 }
 
