@@ -51,6 +51,7 @@
 
 #define Button_Pin GPIO_PIN_0
 #define Button_GPIO_Port GPIOA
+#define Button_EXTI_IRQn EXTI0_IRQn
 #define Green_LED_Pin GPIO_PIN_13
 #define Green_LED_GPIO_Port GPIOG
 
