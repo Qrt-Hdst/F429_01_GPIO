@@ -47,7 +47,8 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+volatile int numberProgram=0;
+////////////////////////volatile numberProgram=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,7 +58,29 @@ static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	HAL_GPIO_WritePin(Green_LED_GPIO_Port,Green_LED_Pin, HAL_GPIO_ReadPin(Button_GPIO_Port,Button_Pin));
+
+	if(GPIO_Pin==Button_Pin){
+		if(numberProgram==0){
+		HAL_GPIO_WritePin(Green_LED_GPIO_Port,Green_LED_Pin,GPIO_PIN_SET);
+		numberProgram++;
+		}
+		else if(numberProgram==1){
+		HAL_GPIO_WritePin(Blue_LED_GPIO_Port,Blue_LED_Pin,GPIO_PIN_SET);
+		numberProgram++;
+		}
+		else if(numberProgram==2){
+			HAL_GPIO_WritePin(Blue_LED_GPIO_Port,Blue_LED_Pin,GPIO_PIN_RESET);
+			numberProgram++;
+		}
+		else if(numberProgram==3){
+			HAL_GPIO_WritePin(Green_LED_GPIO_Port,Green_LED_Pin,GPIO_PIN_RESET);
+			numberProgram++;
+		}
+		else{
+			numberProgram=0;
+		}
+
+	}
 }
 /* USER CODE END PFP */
 
@@ -102,7 +125,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+	//  HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -182,20 +205,20 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Green_LED_GPIO_Port, Green_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOG, Green_LED_Pin|Blue_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : Button_Pin */
   GPIO_InitStruct.Pin = Button_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(Button_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : Green_LED_Pin */
-  GPIO_InitStruct.Pin = Green_LED_Pin;
+  /*Configure GPIO pins : Green_LED_Pin Blue_LED_Pin */
+  GPIO_InitStruct.Pin = Green_LED_Pin|Blue_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(Green_LED_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);

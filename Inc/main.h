@@ -54,6 +54,8 @@
 #define Button_EXTI_IRQn EXTI0_IRQn
 #define Green_LED_Pin GPIO_PIN_13
 #define Green_LED_GPIO_Port GPIOG
+#define Blue_LED_Pin GPIO_PIN_14
+#define Blue_LED_GPIO_Port GPIOG
 
 /* ########################## Assert Selection ############################## */
 /**
